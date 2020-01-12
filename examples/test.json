@@ -1,0 +1,37 @@
+{
+    "refresh_interval":     60,
+    "test_float":   [18.000000, 10.000000, 5.000000],
+    "timeout":      12.500000,
+    "dynamic_loading":      [{
+                    "so_path":      "plugins/User.so",
+                    "load": false,
+                    "version":      1,
+                    "cmd":  [{
+                                    "cmd":  -2001,
+                                    "class":        "neb::CmdUserLogin"
+                            }, {
+                                    "cmd":  2003,
+                                    "class":        "neb::CmdUserLogout"
+                            }],
+                    "module":       [{
+                                    "path": "im/user/login",
+                                    "class":        "neb::ModuleLogin"
+                            }, {
+                                    "path": "im/user/logout",
+                                    "class":        "neb::ModuleLogout"
+                            }]
+            }, {
+                    "so_path":      "plugins/ChatMsg.so",
+                    "load": false,
+                    "version":      1,
+                    "cmd":  [{
+                                    "cmd":  2001,
+                                    "class":        "neb::CmdChat"
+                            }],
+                    "module":       []
+            }],
+    "depend":       {
+            "nebula":       "https://github.com/Bwar/Nebula",
+            "bootstrap":    ["BEACON", "LOGIC", "LOGGER", "INTERFACE", "ACCESS"]
+    }
+}
