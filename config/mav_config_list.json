@@ -33,7 +33,7 @@
 		"pitch_servo_upper":		1.5,
 		"left_stroke_mid":			0.0,
 		"right_stroke_mid":			0.0,
-		"servo_internal_friction":	0.01,
+		"servo_internal_friction":	0.001,
 		"left_motor_properties":
 		{
 			"resistance":				12.4,

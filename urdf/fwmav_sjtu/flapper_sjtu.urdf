@@ -6,12 +6,12 @@
 
 	<link name="torso">
 		<inertial>
-			<origin xyz="-1.286E-3 0.551E-3 8.089E-3" rpy="0.0 0.0 0.0"/>
+			<origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
 			<mass value="14.64E-3"/>
 			<inertia ixx="11.585E-6" ixy="0.0" ixz="0.0" iyy="8.889E-6" iyz="0.0" izz="3.580E-6"/>
 		</inertial>
 		<visual>
-			<origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+			<origin xyz="1.286E-3 -0.551E-3 -8.089E-3" rpy="0.0 0.0 0.0"/>
 			<geometry>
 				<mesh filename = "meshes/torso.STL"/>
 			</geometry>
@@ -146,7 +146,7 @@
 	</joint> -->
     
 	<joint name="servo_control" type="revolute">
-		<origin xyz="0.0 0.0 50E-3" rpy="0.0 0.0 0.0"/>
+		<origin xyz="1.286E-3 -0.551E-3 41.911E-3" rpy="0.0 0.0 0.0"/>
 		<parent link="torso"/>
 		<child link="flapping_mechanism"/>
 		<axis xyz="0.0 1.0 0.0"/>
