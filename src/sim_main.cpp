@@ -17,14 +17,11 @@ using namespace dart::common;
 
 int main(int argc, char* argv[])
 {
+    //ros init
     ros::init(argc, argv, "DartSimNode");
+
     // Create a world
     dart::simulation::WorldPtr world(new dart::simulation::World);
-
-    // Add a target object to the world
-    dart::gui::osg::InteractiveFramePtr target(
-        new dart::gui::osg::InteractiveFrame(dart::dynamics::Frame::World()));
-    // world->addSimpleFrame(target);
 
     // Wrap a WorldNode around it
     osg::ref_ptr<SimEnv> node = new SimEnv(world,"/home/kexin/Work/fwmav_sim_custom_ws/config/sim_config.json");
@@ -38,14 +35,18 @@ int main(int argc, char* argv[])
     viewer->getImGuiHandler()->addWidget(
     std::make_shared<SimPanel>(viewer, world, node));
 
-    // Active the drag-and-drop feature for the target
-    viewer->enableDragAndDrop(target.get());
+    // // Add a target object to the world
+    // dart::gui::osg::InteractiveFramePtr target(
+    //     new dart::gui::osg::InteractiveFrame(dart::dynamics::Frame::World()));
+    // world->addSimpleFrame(target);
+    // // Active the drag-and-drop feature for the target
+    // viewer->enableDragAndDrop(target.get());
 
     // Pass in the custom event handler
     // viewer->addEventHandler(new CustomEventHandler);
 
-    // Set up the window to be 640x480
-    viewer->setUpViewInWindow(0, 0, 640, 480);
+    // Set up the window to be 1024x768
+    viewer->setUpViewInWindow(0, 0, 1024, 768);
 
     // Adjust the viewpoint of the Viewer
     viewer->getCameraManipulator()->setHomePosition(

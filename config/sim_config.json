@@ -1,8 +1,10 @@
 {
-	"f_sim"		: 1e4,
-	"f_sensor"	: 500,
-	"f_control"	: 250,
-	"f_imu"		: 1000,
-	"f_vicon"	: 200,
-	"df_visual"	: 0.5
+	"f_sim"			: 1e4,
+	"f_sensor"		: 500,
+	"f_control"		: 250,
+	"f_imu"			: 1000,
+	"f_vicon"		: 200,
+	"df_visual"		: 0.5,
+	"mav_urdf"		: "/home/kexin/Work/fwmav_sim_custom_ws/urdf/fwmav_sjtu/flapper_sjtu.urdf",
+	"mav_config"	: "/home/kexin/Work/fwmav_sim_custom_ws/config/mav_config_list.json"
 }

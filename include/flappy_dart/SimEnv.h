@@ -54,6 +54,8 @@ class SimEnv : public dart::gui::osg::RealTimeWorldNode
     int mControlFrequency;
     int mSensorFrequency;
     double mRealTimeFactor;
+    std::string mMAVUrdfPath;
+    std::string mMAVConfigPath;
   
   public:
     void setFWMAVThrottle(double throttle);

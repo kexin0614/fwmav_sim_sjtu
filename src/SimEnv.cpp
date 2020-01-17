@@ -7,16 +7,6 @@ SimEnv::SimEnv(const dart::simulation::WorldPtr& world, const std::string& confi
       mPitchRateFilter2(200),
       mRollRateFilter2(200)
 {
-    //add flapper to world
-    mWorld = world;
-    mFlappy = std::shared_ptr<FWMAV::Flappy>(new FWMAV::Flappy(
-    world,
-    "/home/kexin/Work/fwmav_sim_custom_ws/urdf/fwmav_sjtu/flapper_sjtu.urdf",
-    "/home/kexin/Work/fwmav_sim_custom_ws/config/mav_config_list.json"
-    ));
-    mFlappy -> init();
-    mFlappy -> config();
-    
     //read sim config file
     std::ifstream fin(config_file); 
     std::istreambuf_iterator<char> beg(fin), end;
@@ -29,11 +19,23 @@ SimEnv::SimEnv(const dart::simulation::WorldPtr& world, const std::string& confi
     mSimConfigJson.Get("f_sim",mSimFrequency);
     mSimConfigJson.Get("f_control",mControlFrequency);
     mSimConfigJson.Get("df_visual",mRealTimeFactor);
+    mSimConfigJson.Get("mav_urdf", mMAVUrdfPath);
+    mSimConfigJson.Get("mav_config", mMAVConfigPath);
     mControlDt = 1.0 / mControlFrequency;
     
+    //add flapper to world
+    mWorld = world;
+    mFlappy = std::shared_ptr<FWMAV::Flappy>(
+        new FWMAV::Flappy(world, mMAVUrdfPath, mMAVConfigPath)
+    );
+    mFlappy -> init();
+    mFlappy -> config();
+
+    //world settings
     mWorld -> setTimeStep(1.0 / mSimFrequency);
     this -> setTargetRealTimeFactor(mRealTimeFactor);
 
+    //pid controllers & filters
     mPitchPIDController = std::shared_ptr<FWMAV::SerialPIDController>(
         new FWMAV::SerialPIDController(
             mControlFrequency

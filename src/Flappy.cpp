@@ -284,8 +284,12 @@ void Flappy::preDartStep(const double pitch, const double roll, const double yaw
 }
 
 void Flappy::updateStates(){
-
+    
     Eigen::Isometry3d body_R = mFlappy -> getBodyNode("torso") -> getWorldTransform();
+
+    //DEBUG CODE
+    dtmsg << mFlappy -> getBodyNode("torso") -> getCOMSpatialAcceleration() << std::endl;
+    
     mStates.positions[0] = atan2(body_R(2,1), body_R(2,2));
     mStates.positions[1] = asin(- body_R(2,0));
     mStates.positions[2] = atan2(body_R(1,0), body_R(0,0));
