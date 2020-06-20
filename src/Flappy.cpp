@@ -187,6 +187,9 @@ void Flappy::config(){
     mFlappy -> getDof("torso_to_world_pos_y") -> setVelocity(0.0);  //y vel
     mFlappy -> getDof("torso_to_world_pos_z") -> setPosition(0.0);  //z
     mFlappy -> getDof("torso_to_world_pos_z") -> setVelocity(0.0);  //z vel
+    // mFlappy -> getDof("torso_to_world") -> setPosition(0.0);
+    // mFlappy -> getDof("torso_to_world") -> setVelocity(0.0);
+
     mFlappy -> getDof("left_stroke") -> setPosition(0.0);   //left stroke
     mFlappy -> getDof("left_stroke") -> setVelocity(0.0);   //left stroke vel
     mFlappy -> getDof("left_rotate") -> setPosition(0.0);   //left rotate
@@ -285,14 +288,14 @@ void Flappy::preDartStep(const double pitch, const double roll, const double yaw
 
 void Flappy::updateStates(){
     
-    Eigen::Isometry3d body_R = mFlappy -> getBodyNode("torso") -> getWorldTransform();
+    mStates.rotationMatrix = mFlappy -> getBodyNode("torso") -> getWorldTransform();
 
     //DEBUG CODE
     dtmsg << mFlappy -> getBodyNode("torso") -> getCOMSpatialAcceleration() << std::endl;
-    
-    mStates.positions[0] = atan2(body_R(2,1), body_R(2,2));
-    mStates.positions[1] = asin(- body_R(2,0));
-    mStates.positions[2] = atan2(body_R(1,0), body_R(0,0));
+
+    mStates.positions[0] = atan2(mStates.rotationMatrix(2,1), mStates.rotationMatrix(2,2));
+    mStates.positions[1] = asin(- mStates.rotationMatrix(2,0));
+    mStates.positions[2] = atan2(mStates.rotationMatrix(1,0), mStates.rotationMatrix(0,0));
     mStates.positions[3] = mFlappy -> getBodyNode("torso") -> getCOM()[0];
     mStates.positions[4] = mFlappy -> getBodyNode("torso") -> getCOM()[1];
     mStates.positions[5] = mFlappy -> getBodyNode("torso") -> getCOM()[2];

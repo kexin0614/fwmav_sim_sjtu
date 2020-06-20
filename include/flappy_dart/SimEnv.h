@@ -9,6 +9,7 @@
 #include <string>
 #include "flappy_dart/SerialPIDController.h"
 #include "sensor/Filter.h"
+#include "sensor/VirtualSensor.h"
 
 #include <ros/ros.h>
 #include <geometry_msgs/Vector3.h>
@@ -48,6 +49,8 @@ class SimEnv : public dart::gui::osg::RealTimeWorldNode
     double mFilteredPitchRate;
     double mFilteredRoll;
     double mFilteredRollRate;
+
+    Sensor::VirtualSensor mSensor;
 
     neb::CJsonObject mSimConfigJson;
     int mSimFrequency;

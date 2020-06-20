@@ -32,6 +32,7 @@ src/SimPanel.cpp
 src/Flappy.cpp
 src/Actuator.cpp
 src/Wing.cpp
+src/sensor/VirtualSensor.cpp
 src/cjson/cJSON.c
 src/cjson/CJsonObject.cpp
 )

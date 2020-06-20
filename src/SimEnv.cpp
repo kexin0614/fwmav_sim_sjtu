@@ -55,6 +55,11 @@ SimEnv::SimEnv(const dart::simulation::WorldPtr& world, const std::string& confi
     mFilteredRoll = 0.0;
     mFilteredRollRate = 0.0;
 
+    //virtual sensors settings
+    mSensor.configAndInit(250, 250, 250, 30, 90, 90, 0);
+    mSensor.setDataSource(mFlappy);
+
+    //class private var init
     mFWMAVThrottle = 0.0;
     mFWMAVPitch = 0.0;
     mFWMAVRoll = 0.0;
@@ -76,11 +81,14 @@ void SimEnv::reset(){
     mFilteredPitchRate = 0.0;
     mFilteredRoll = 0.0;
     mFilteredRollRate = 0.0;
+    mSensor.configAndInit(250, 250, 250, 30, 90, 90, 0);
 }
 
 void SimEnv::customPreStep()
 {
     mFlappy -> preDartStep(mFWMAVPitch, mFWMAVRoll, 0, mFWMAVThrottle, mWorld -> getTime());
+    mSensor.run(mWorld -> getTime());
+    dtmsg << mSensor.mIMUData.acc[2];
     return;
 }
 
