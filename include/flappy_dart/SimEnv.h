@@ -13,6 +13,7 @@
 
 #include <ros/ros.h>
 #include <geometry_msgs/Vector3.h>
+#include <visualization_msgs/Marker.h>
 
 class SimEnv : public dart::gui::osg::RealTimeWorldNode
 {
@@ -76,6 +77,7 @@ class SimEnv : public dart::gui::osg::RealTimeWorldNode
     double mNextControlTime;
 
     std::string mConfigJsonString;
+    std::string mProgramPathString;
 
   //DEBUG CODE
     ros::Publisher pid_pub;

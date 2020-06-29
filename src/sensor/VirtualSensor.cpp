@@ -39,7 +39,8 @@ void VirtualSensor::configAndInit(int acc_freq, int gyro_freq, int mag_freq,
 void VirtualSensor::run(double time){
 
     if(mDataSource == nullptr){
-        
+        dterr << "No DataSource is given for VirtualSensor." << std::endl;
+        return;
     }
 
     if(time >= mNextAccTime){
@@ -47,6 +48,20 @@ void VirtualSensor::run(double time){
         mIMUData.acc[0] = mAccLpf[0].biquadFilterApply(mDataSource -> mStates.accelerations[3] + mDataSource -> mStates.rotationMatrix(2,0) * 9.8);
         mIMUData.acc[1] = mAccLpf[1].biquadFilterApply(mDataSource -> mStates.accelerations[4] + mDataSource -> mStates.rotationMatrix(2,1) * 9.8);
         mIMUData.acc[2] = mAccLpf[2].biquadFilterApply(mDataSource -> mStates.accelerations[5] + mDataSource -> mStates.rotationMatrix(2,2) * 9.8);
+    }
+
+    if(time >= mNextGyroTime){
+        mNextGyroTime += mGyroDt;
+        mIMUData.gyro[0] = mGyroLpf[0].biquadFilterApply(mDataSource -> mStates.velocities[0]);
+        mIMUData.gyro[1] = mGyroLpf[1].biquadFilterApply(mDataSource -> mStates.velocities[1]);
+        mIMUData.gyro[2] = mGyroLpf[2].biquadFilterApply(mDataSource -> mStates.velocities[2]);
+    }
+
+    if(time >= mNextMagTime){
+        mNextMagTime += mMagDt;
+        mIMUData.mag[0] = mMagLpf[0].biquadFilterApply(mDataSource -> mStates.rotationMatrix(0,0));
+        mIMUData.mag[1] = mMagLpf[1].biquadFilterApply(mDataSource -> mStates.rotationMatrix(0,1));
+        mIMUData.mag[2] = mMagLpf[2].biquadFilterApply(mDataSource -> mStates.rotationMatrix(0,2));
     }
     return;
 }

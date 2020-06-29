@@ -7,8 +7,24 @@ SimEnv::SimEnv(const dart::simulation::WorldPtr& world, const std::string& confi
       mPitchRateFilter2(200),
       mRollRateFilter2(200)
 {
+
+    char program_path[1024];
+    int i;
+    if(i = readlink("/proc/self/exe", program_path, 1024)){
+        
+        while(program_path[i] != '/' && i--);
+        program_path[i + 1] = 0;
+        dtmsg << "The program is running at " << program_path << std::endl;
+
+    }
+    else{
+        dterr << "Couldn't find Program path, check the permission." << std::endl;
+        return;
+    }
+    mProgramPathString = program_path;
+
     //read sim config file
-    std::ifstream fin(config_file); 
+    std::ifstream fin(mProgramPathString + config_file); 
     std::istreambuf_iterator<char> beg(fin), end;
     mConfigJsonString.append(beg,end);
     fin.close();
@@ -26,7 +42,7 @@ SimEnv::SimEnv(const dart::simulation::WorldPtr& world, const std::string& confi
     //add flapper to world
     mWorld = world;
     mFlappy = std::shared_ptr<FWMAV::Flappy>(
-        new FWMAV::Flappy(world, mMAVUrdfPath, mMAVConfigPath)
+        new FWMAV::Flappy(world, mProgramPathString + mMAVUrdfPath, mProgramPathString + mMAVConfigPath)
     );
     mFlappy -> init();
     mFlappy -> config();
@@ -56,7 +72,7 @@ SimEnv::SimEnv(const dart::simulation::WorldPtr& world, const std::string& confi
     mFilteredRollRate = 0.0;
 
     //virtual sensors settings
-    mSensor.configAndInit(250, 250, 250, 30, 90, 90, 0);
+    mSensor.configAndInit(350, 350, 350, 30, 90, 90, 0);
     mSensor.setDataSource(mFlappy);
 
     //class private var init
@@ -66,7 +82,7 @@ SimEnv::SimEnv(const dart::simulation::WorldPtr& world, const std::string& confi
     mFWMAVYaw = 0.0;
 
     //DEBUG CODE
-    pid_pub = nh.advertise<geometry_msgs::Vector3>("/pid_debug", 10);
+    pid_pub = nh.advertise<visualization_msgs::Marker>("/imu_debug", 10);
 
 }
 
@@ -81,7 +97,7 @@ void SimEnv::reset(){
     mFilteredPitchRate = 0.0;
     mFilteredRoll = 0.0;
     mFilteredRollRate = 0.0;
-    mSensor.configAndInit(250, 250, 250, 30, 90, 90, 0);
+    mSensor.configAndInit(350, 350, 350, 30, 90, 90, 0);
 }
 
 void SimEnv::customPreStep()
@@ -99,10 +115,6 @@ void SimEnv::customPostStep()
     mFilteredPitchRate = mPitchRateFilter2.filterApply(mFlappy -> mStates.velocities[1]);
 
     if(mWorld -> getTime() > mNextControlTime){
-        
-        //DEBUG CODE
-        geometry_msgs::Vector3 msg;
-        msg.y = mFilteredRollRate * 180.0 / M_PI;
 
         mNextControlTime += mControlDt;
         
@@ -126,8 +138,19 @@ void SimEnv::customPostStep()
         mFWMAVRoll = mRollPIDController -> getOutput() * 5.0;
         
         //DEBUG CODE
-        msg.z = mFilteredRollRate * 180.0 / M_PI;
-        msg.x = mFWMAVRoll;
+        visualization_msgs::Marker msg;
+        msg.header.frame_id = "map";
+        msg.header.stamp = ros::Time::now();
+        msg.type = visualization_msgs::Marker::ARROW;
+        geometry_msgs::Point p;
+        p.x = 0; p.y = 0; p.z = 0;
+        msg.points.push_back(p);
+        p.x = mSensor.mIMUData.acc[0];
+        p.y = mSensor.mIMUData.acc[1];
+        p.z = mSensor.mIMUData.acc[2];
+        msg.points.push_back(p);
+        msg.scale.x = 0.5; msg.scale.y = 1; msg.scale.z = 0;
+        msg.color.a = 1.0; msg.color.r = 1.0;
         pid_pub.publish(msg);
     }
 }

@@ -9,6 +9,18 @@
 #include "cjson/CJsonObject.hpp"
 #include <Eigen/Dense>
 
+/***************************************
+ *      z(yaw)             ___         
+ *      |                <    |
+ *      |____y(pitch) ____|   |______
+ *     /              \             /
+ *    /                \__      ___/
+ *   x(front)            |     |
+ *   (roll)               \    \
+ *                         \____\
+ * 
+ *************************************/
+
 namespace FWMAV{
 
 class Flappy{

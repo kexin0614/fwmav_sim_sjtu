@@ -24,7 +24,7 @@ int main(int argc, char* argv[])
     dart::simulation::WorldPtr world(new dart::simulation::World);
 
     // Wrap a WorldNode around it
-    osg::ref_ptr<SimEnv> node = new SimEnv(world,"/home/kexin/Work/fwmav_sim_custom_ws/config/sim_config.json");
+    osg::ref_ptr<SimEnv> node = new SimEnv(world,"config/sim_config.json");
 
     // Create a Viewer and set it up with the WorldNode
     osg::ref_ptr<dart::gui::osg::ImGuiViewer> viewer

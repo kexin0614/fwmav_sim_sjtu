@@ -5,6 +5,6 @@
 	"f_imu"			: 1000,
 	"f_vicon"		: 200,
 	"df_visual"		: 0.5,
-	"mav_urdf"		: "/home/kexin/Work/fwmav_sim_custom_ws/urdf/fwmav_sjtu/flapper_sjtu.urdf",
-	"mav_config"	: "/home/kexin/Work/fwmav_sim_custom_ws/config/mav_config_list.json"
+	"mav_urdf"		: "urdf/fwmav_sjtu/flapper_sjtu.urdf",
+	"mav_config"	: "config/mav_config_list.json"
 }
