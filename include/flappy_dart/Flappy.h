@@ -9,6 +9,18 @@
 #include "cjson/CJsonObject.hpp"
 #include <Eigen/Dense>
 
+/***************************************
+ *      z(yaw)             ___         
+ *      |                <    |
+ *      |____y(pitch) ____|   |______
+ *     /              \             /
+ *    /                \__      ___/
+ *   x(front)            |     |
+ *   (roll)               \    \
+ *                         \____\
+ * 
+ *************************************/
+
 namespace FWMAV{
 
 class Flappy{
@@ -30,6 +42,7 @@ class Flappy{
     
     public:
         struct{
+            Eigen::Isometry3d rotationMatrix;       //rotation matrix from world to torso
             Eigen::Vector6d positions;              //body positions: roll pitch yaw x y z
             Eigen::Vector6d velocities;             //body velocities: roll pitch yaw x y z
             Eigen::Vector6d accelerations;

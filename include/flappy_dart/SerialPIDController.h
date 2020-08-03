@@ -13,8 +13,8 @@ class SerialPIDController{
             m_ext_kp = 3.0;
             m_ext_kd = 0.0;
             m_ext_ki = 0.0;
-            m_int_kp = 0.06;
-            m_int_kd = 0.06;
+            m_int_kp = 0.05;
+            m_int_kd = 0.02;
             m_int_ki = 0.0;
 
             reset();

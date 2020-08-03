@@ -13,6 +13,7 @@ find_package(catkin REQUIRED COMPONENTS
  roscpp
  std_msgs
  geometry_msgs
+ tf
  )
 
 add_compile_options(-std=c++14)
@@ -32,6 +33,10 @@ src/SimPanel.cpp
 src/Flappy.cpp
 src/Actuator.cpp
 src/Wing.cpp
+src/ServoD1302.cpp
+src/sensor/VirtualSensor.cpp
+src/sensor/Madgwick.cpp
+src/sensor/SensorFusion.cpp
 src/cjson/cJSON.c
 src/cjson/CJsonObject.cpp
 )
@@ -54,3 +59,37 @@ src/cjson/cJSON.c
 src/cjson/CJsonObject.cpp
 )
 target_link_libraries(ex_json PUBLIC ${required_libraries})
+
+
+
+## Copy Resources
+FILE(GLOB Config_FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/config/*.json
+)
+FILE(GLOB Urdf_FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/urdf/fwmav_sjtu/*.urdf
+)
+FILE(GLOB Mesh_FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/urdf/fwmav_sjtu/meshes/*.stl
+    ${CMAKE_CURRENT_SOURCE_DIR}/urdf/fwmav_sjtu/meshes/*.STL
+)
+add_custom_target(CopyConfigFiles ALL
+  VERBATIM
+  COMMAND_EXPAND_LISTS
+  COMMAND ${CMAKE_COMMAND} -E
+          make_directory "${PROJECT_BINARY_DIR}/config/"
+  COMMAND ${CMAKE_COMMAND} -E
+          make_directory "${PROJECT_BINARY_DIR}/urdf/fwmav_sjtu/meshes/"
+  COMMAND ${CMAKE_COMMAND} -E 
+         copy_if_different
+                "${Config_FILES}"
+                "${PROJECT_BINARY_DIR}/config/"
+  COMMAND ${CMAKE_COMMAND} -E 
+         copy_if_different
+                "${Urdf_FILES}"
+                "${PROJECT_BINARY_DIR}/urdf/fwmav_sjtu/"
+  COMMAND ${CMAKE_COMMAND} -E 
+         copy_if_different
+                "${Mesh_FILES}"
+                "${PROJECT_BINARY_DIR}/urdf/fwmav_sjtu/meshes/"
+)
