@@ -13,6 +13,7 @@ find_package(catkin REQUIRED COMPONENTS
  roscpp
  std_msgs
  geometry_msgs
+ tf
  )
 
 add_compile_options(-std=c++14)
@@ -32,7 +33,10 @@ src/SimPanel.cpp
 src/Flappy.cpp
 src/Actuator.cpp
 src/Wing.cpp
+src/ServoD1302.cpp
 src/sensor/VirtualSensor.cpp
+src/sensor/Madgwick.cpp
+src/sensor/SensorFusion.cpp
 src/cjson/cJSON.c
 src/cjson/CJsonObject.cpp
 )

@@ -1,0 +1,16 @@
+{
+	"acc_freq"			: 1000,
+	"gyro_freq"			: 1000,
+	"mag_freq"			: 350,
+	"acc_lpf"			: 20,
+	"gyro_lpf"			: 90,
+	"mag_lpf"			: 90,
+	"acc_soft_lpf"		: 20,
+	"gyro_soft_lpf"		: 60,
+	"mag_soft_lpf"		: 30,
+	"fusion_freq"		: 100,
+	"fusion_delay"		: 0.001,
+	"gyro_offset_x"		: 0.01,
+	"gyro_offset_y"		: 0.025,
+	"gyro_offset_z"		: 0.01
+}

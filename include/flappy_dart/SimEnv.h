@@ -10,6 +10,8 @@
 #include "flappy_dart/SerialPIDController.h"
 #include "sensor/Filter.h"
 #include "sensor/VirtualSensor.h"
+#include "sensor/SensorFusion.h"
+#include <tf/transform_broadcaster.h>
 
 #include <ros/ros.h>
 #include <geometry_msgs/Vector3.h>
@@ -32,12 +34,15 @@ class SimEnv : public dart::gui::osg::RealTimeWorldNode
       // to be used.
     }
 
+    void setOsgViewer(osg::ref_ptr<dart::gui::osg::ImGuiViewer>);
     
 
   protected:
     std::shared_ptr<FWMAV::Flappy> mFlappy;
     dart::simulation::WorldPtr mWorld;
+    osg::ref_ptr<dart::gui::osg::ImGuiViewer> mViewer;
 
+    // Simple PID Controller & Sensor Filter
     std::shared_ptr<FWMAV::SerialPIDController> mPitchPIDController;
     Sensor::BiquadFilter mPitchFilter;
     Sensor::BiquadFilter mPitchRateFilter;
@@ -51,7 +56,14 @@ class SimEnv : public dart::gui::osg::RealTimeWorldNode
     double mFilteredRoll;
     double mFilteredRollRate;
 
-    Sensor::VirtualSensor mSensor;
+    //Delay of Sensor
+    std::shared_ptr<Sensor::PureDelay<double> > mPitchDelay;
+    std::shared_ptr<Sensor::PureDelay<double> > mPitchRateDelay;
+    std::shared_ptr<Sensor::PureDelay<double> > mRollDelay;
+    std::shared_ptr<Sensor::PureDelay<double> > mRollRateDelay;
+
+    // Sensor::VirtualSensor mSensor;
+    std::shared_ptr<Sensor::SensorFusion> mSensor;
 
     neb::CJsonObject mSimConfigJson;
     int mSimFrequency;
@@ -60,6 +72,7 @@ class SimEnv : public dart::gui::osg::RealTimeWorldNode
     double mRealTimeFactor;
     std::string mMAVUrdfPath;
     std::string mMAVConfigPath;
+    std::string mSensorConfigPath;
   
   public:
     void setFWMAVThrottle(double throttle);
@@ -81,7 +94,10 @@ class SimEnv : public dart::gui::osg::RealTimeWorldNode
 
   //DEBUG CODE
     ros::Publisher pid_pub;
+    ros::Publisher reference_vicon_pub;
     ros::NodeHandle nh;
+    tf::TransformBroadcaster tf_pub;
+    ros::Publisher acc_vis_pub;
 
 };
 

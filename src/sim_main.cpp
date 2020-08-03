@@ -30,6 +30,7 @@ int main(int argc, char* argv[])
     osg::ref_ptr<dart::gui::osg::ImGuiViewer> viewer
         = new dart::gui::osg::ImGuiViewer();
     viewer->addWorldNode(node);
+    // node -> setOsgViewer(viewer);
 
     // Add control widget for atlas
     viewer->getImGuiHandler()->addWidget(

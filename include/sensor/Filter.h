@@ -93,6 +93,28 @@ class BiquadFilter{
             return result;
         }
 
+        void biquadFilterUpdate(float filterFreq, double sampleDt, float Q, biquadFilterType filterType)
+        {
+            // backup state
+            float x1 = mCoeff.x1;
+            float x2 = mCoeff.x2;
+            float y1 = mCoeff.y1;
+            float y2 = mCoeff.y2;
+
+            biquadFilterInit(filterFreq, sampleDt, Q, filterType);
+
+            // restore state
+            mCoeff.x1 = x1;
+            mCoeff.x2 = x2;
+            mCoeff.y1 = y1;
+            mCoeff.y2 = y2;
+        }
+
+        void biquadFilterUpdateLPF(float filterFreq, double sampleDt)
+        {
+            biquadFilterUpdate(filterFreq, sampleDt, BIQUAD_Q, FILTER_LPF);
+        }
+
 };
 
 class SmoothFilter{
@@ -125,6 +147,33 @@ class SmoothFilter{
         int mFrontPointer;
         int mSmoothCount;
         double mSum;
+};
+
+template<class T>
+class PureDelay{
+    public:
+        PureDelay(double sim_dt, double delay){
+            mQueueSize = (size_t)round(delay / sim_dt) + 1;
+            mDataQueue = new T[mQueueSize];
+            reset();
+        }
+        ~PureDelay(){
+            delete mDataQueue;
+        }
+        void reset(){
+            memset(mDataQueue, 0, sizeof(mDataQueue));
+            mCurrentIndex = 0;
+        }
+        T applyDelay(T input){
+            mDataQueue[mCurrentIndex ++] = input;
+            if(mCurrentIndex == mQueueSize) mCurrentIndex = 0;
+            return mDataQueue[mCurrentIndex];
+        }
+        
+    private:
+        size_t mCurrentIndex;
+        size_t mQueueSize;
+        T* mDataQueue;
 };
 
 

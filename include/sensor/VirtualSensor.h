@@ -8,6 +8,8 @@
 namespace Sensor
 {
 
+const double STANDARD_GRAVITY = 9.8;
+
 class VirtualSensor{
 
     public:
@@ -16,6 +18,7 @@ class VirtualSensor{
         void configAndInit(int acc_freq, int gyro_freq, int mag_freq,
                     double acc_lpf, double gyro_lpf, double mag_lpf,
                     double delay);
+        void setGyroOffset(double off_x, double off_y, double off_z);
         void run(double time);
 
     public:
@@ -33,11 +36,11 @@ class VirtualSensor{
         BiquadFilter mMagLpf[3];
 
         double mAccDt, mGyroDt, mMagDt;
-        
         double mNextAccTime;
         double mNextGyroTime;
         double mNextMagTime;
-    
+
+        double mGyroOffset[3];
 
 };
 

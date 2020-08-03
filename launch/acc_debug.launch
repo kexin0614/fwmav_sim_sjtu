@@ -1,0 +1,15 @@
+<launch>
+  
+  <arg name="model" default="$(find rviz_teleop_commander)/urdf/flapper_sjtu.urdf"/>
+  <arg name="rviz_path" default="/home/kris/KexinWork/fwmav_sim_sjtu/rviz/acc_debug.rviz"/>
+
+  <param name="robot_description" command="$(find xacro)/xacro --inorder $(arg model)" />
+
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rviz_path)" output="screen" required="true" />
+
+  <node pkg="tf" type="static_transform_publisher" name="bl2fm"  args="1.286e-3 -0.551e-3 41.911e-3 0 0 0 /base_link /flapping_mechanism 50" />
+  <node pkg="tf" type="static_transform_publisher" name="fm2lle"  args="0 13.95e-3 18.9913e-3 0 0 0 /flapping_mechanism /left_leading_edge 50" />
+  <node pkg="tf" type="static_transform_publisher" name="lle2lw"  args="0 0 0 0 0 0 /left_leading_edge /left_wing 50" />
+  <node pkg="tf" type="static_transform_publisher" name="fm2rle"  args="0 -13.95e-3 18.9913e-3 0 0 0 /flapping_mechanism /right_leading_edge 50" />
+  <node pkg="tf" type="static_transform_publisher" name="rle2rw"  args="0 0 0 0 0 0 /right_leading_edge /right_wing 50" />
+</launch>

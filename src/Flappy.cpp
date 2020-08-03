@@ -291,7 +291,7 @@ void Flappy::updateStates(){
     mStates.rotationMatrix = mFlappy -> getBodyNode("torso") -> getWorldTransform();
 
     //DEBUG CODE
-    dtmsg << mFlappy -> getBodyNode("torso") -> getCOMSpatialAcceleration() << std::endl;
+    // dtmsg << mFlappy -> getBodyNode("torso") -> getCOMSpatialAcceleration() << std::endl;
 
     mStates.positions[0] = atan2(mStates.rotationMatrix(2,1), mStates.rotationMatrix(2,2));
     mStates.positions[1] = asin(- mStates.rotationMatrix(2,0));
