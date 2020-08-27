@@ -1,18 +1,27 @@
 This project is dependent on DART. Please make sure a proper version of DART is 
 installed before building this project.
+Also, some debugging code depends on ROS, so a ROS (>=kinetic) distribution must
+be installed.
 
-1. Build Instructions
+1. Install DART library & ROS
 
- * From this directory:
-  $ mkdir build
-  $ cd build
-  $ cmake ..
-  $ make
+  Ubuntu (16.04 and later)
+  (refer to http://dartsim.github.io/install_dart_on_ubuntu.html)
+    $ sudo apt-add-repository ppa:dartsim/ppa
+    $ sudo apt-get update
+    $ sudo apt-get install libdart6-all-dev
+  
+  (refer to http://wiki.ros.org/ROS/Installation)
 
-2. Execute Instructions
+2. Build Instructions
 
- * Launch the executable from the build directory above:
-  $ ./{generated_executable}
+  From this directory:
+    $ mkdir build
+    $ cd build
+    $ cmake ..
+    $ make
 
- * Follow the instructions detailed in the console.
+3. Execute Instructions
 
+  Launch the executable from the build directory above:
+    $ ./flappy_dart
